@@ -1,6 +1,8 @@
 package extractor
 
 import (
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -15,4 +17,8 @@ func (suite *pdfExtractorTestSuite) TestShouldRemoveTheNameOfTheCandidateWhenMen
 	assert.NotContains(suite.T(), result, "Candidate Name")
 	assert.NotContains(suite.T(), result, "Candidate")
 	assert.NotContains(suite.T(), result, "Name")
+}
+
+func TestPDFExtractorTestSuite(t *testing.T) {
+	suite.Run(t, new(pdfExtractorTestSuite))
 }
