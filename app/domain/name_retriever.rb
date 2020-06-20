@@ -30,8 +30,14 @@ module Domain
     attr_reader :largest_font_size
 
     def set_text_font_and_size(label, size)
-      @largest_font_size = size if size > @largest_font_size
+      @largest_font_size = size if largest_font_size?(size)
       @state.set_text_font_and_size(label, size)
+    end
+
+    private
+
+    def largest_font_size?(size)
+      size > @largest_font_size
     end
   end
 

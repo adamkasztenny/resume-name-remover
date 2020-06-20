@@ -3,14 +3,14 @@
 require 'pdf-reader'
 require_relative '../../app/domain/name_retriever'
 
-RSpec.describe 'Name Retrieval' do
+describe 'Name Retrieval' do
   context 'when the document is empty' do
     subject do
       reader = PDF::Reader.new('spec/Empty.pdf')
       Domain::NameRetriever.new(reader)
     end
 
-    it "cannot retrieve the candidate's name" do
+    it "cannot retrieve a candidate's name" do
       expect(subject.name).to be_empty
     end
   end
