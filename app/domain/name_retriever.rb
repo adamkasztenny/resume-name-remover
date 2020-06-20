@@ -5,7 +5,11 @@ require 'pdf-reader'
 module Domain
   class NameRetriever
     def initialize(reader)
-      @name_receiver = NameReciever.new(largest_font_size(reader))
+      font_receiver = initialize_font_receiver(reader)
+      largest_font_size = font_receiver.largest_font_size
+      largest_font_label = font_receiver.largest_font_label
+
+      @name_receiver = NameReciever.new(largest_font_size, largest_font_label)
       reader.pages.first.walk(@name_receiver)
     end
 
@@ -15,30 +19,49 @@ module Domain
 
     private
 
-    def largest_font_size(reader)
-      font_size_receiver = FontSizeReceiver.new
-      reader.pages.first.walk(font_size_receiver)
-      font_size_receiver.largest_font_size
+    def initialize_font_receiver(reader)
+      font_receiver = FontReceiver.new
+      reader.pages.first.walk(font_receiver)
+      font_receiver
     end
   end
 
-  class FontSizeReceiver < PDF::Reader::PageTextReceiver
+  class FontReceiver < PDF::Reader::PageTextReceiver
     def initialize
       @largest_font_size = 0
+      @largest_font_label = nil
     end
 
     attr_reader :largest_font_size
+    attr_reader :largest_font_label
 
     def set_text_font_and_size(label, size)
-      @largest_font_size = size if size > @largest_font_size
+      if is_largest_font?(size)
+        @largest_font_size = size
+        @largest_font_label = label
+      elsif is_label_reused_for_smaller_font?(label, size)
+        @largest_font_label = nil
+      end
+
       @state.set_text_font_and_size(label, size)
+    end
+
+    private 
+
+    def is_largest_font?(size)
+      size > @largest_font_size
+    end
+
+    def is_label_reused_for_smaller_font?(label, size)
+      @largest_font_label == label && size < @largest_font_size
     end
   end
 
   # Mostly copied from PDF::Reader::PageTextReceiver, the internal_show_text method was modified
   class NameReciever < PDF::Reader::PageTextReceiver
-    def initialize(largest_font_size)
+    def initialize(largest_font_size, largest_font_label)
       @largest_font_size = largest_font_size
+      @largest_font_label = largest_font_label
       @name = []
     end
 
@@ -80,7 +103,9 @@ module Domain
     end
 
     def accumulate_name(new_x, new_y, scaled_glyph_width, utf8_chars)
-      return unless @state.font_size >= @largest_font_size
+      has_largest_font = @state.font_size >= @largest_font_size
+      has_largest_font_label = @state.current_font == @state.find_font(@largest_font_label)
+      return unless has_largest_font || has_largest_font_label
 
       @name << PDF::Reader::TextRun.new(new_x, new_y, scaled_glyph_width, @state.font_size, utf8_chars)
     end
