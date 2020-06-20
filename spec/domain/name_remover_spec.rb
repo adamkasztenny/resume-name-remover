@@ -13,7 +13,7 @@ describe 'Name Removal' do
     text_content = ''
 
     it 'does not include the candidate name' do
-      result = subject.remove(candidate_name, text_content)
+      result = subject.remove(name: candidate_name, text_content: text_content)
 
       expect(result).to be_empty
       expect(result).not_to include(candidate_name)
@@ -61,7 +61,7 @@ example.com                        Cumulative GPA: 2.26
       }
 
       it 'does not include any part of the candidate name' do
-        result = subject.remove(candidate_name, text_content)
+        result = subject.remove(name: candidate_name, text_content: text_content)
 
         expect(result).not_to be_empty
         expect(result).not_to include('Candidate')
@@ -114,7 +114,7 @@ Candidate Name is my name
       }
 
       it 'does not include any part of the candidate name' do
-        result = subject.remove(candidate_name, text_content)
+        result = subject.remove(name: candidate_name, text_content: text_content)
 
         expect(result).not_to be_empty
         expect(result).not_to include('Candidate')
@@ -131,15 +131,8 @@ Candidate Name is my name
         Lorem ipsum
       )
 
-      it 'does not include the candidate name without spaces' do
-        result = subject.remove(candidate_name_without_spaces, text_content)
-
-        expect(result).not_to be_empty
-        expect(result).not_to include(candidate_name_without_spaces)
-      end
-
       it 'does not include any part of the candidate name' do
-        result = subject.remove(candidate_name_without_spaces, text_content)
+        result = subject.remove(name: candidate_name_without_spaces, text_content: text_content)
 
         expect(result).not_to be_empty
         expect(result).not_to include('Candidate')
@@ -156,7 +149,7 @@ Candidate Name is my name
       )
 
       it 'returns the text content unmodified' do
-        result = subject.remove(candidate_name, text_content)
+        result = subject.remove(name: candidate_name, text_content: text_content)
 
         expect(result).not_to be_empty
         expect(result).to equal(text_content)
