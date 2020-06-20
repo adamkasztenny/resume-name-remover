@@ -146,5 +146,21 @@ Candidate Name is my name
         expect(result).not_to include('Name')
       end
     end
+
+    context "when the candidate's name is empty" do
+      candidate_name = ''
+      text_content = %(
+        CandidateName
+
+        I'm Candidate Name!
+      )
+
+      it 'returns the text content unmodified' do
+        result = subject.remove(candidate_name, text_content)
+
+        expect(result).not_to be_empty
+        expect(result).to equal(text_content)
+      end
+    end
   end
 end
