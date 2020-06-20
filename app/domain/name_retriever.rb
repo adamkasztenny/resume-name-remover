@@ -13,14 +13,14 @@ module Domain
       @name_receiver.name.join('')
     end
 
-  private
+    private
 
     def largest_font_size(reader)
       font_size_receiver = FontSizeReceiver.new
       reader.pages.first.walk(font_size_receiver)
       font_size_receiver.largest_font_size
     end
-end
+  end
 
   class FontSizeReceiver < PDF::Reader::PageTextReceiver
     def initialize
@@ -64,26 +64,25 @@ end
       raise PDF::Reader::MalformedPDFError, 'current font is invalid' if @state.current_font.nil?
 
       glyphs = @state.current_font.unpack(string)
+      process_glyphs(glyphs)
+    end
+
+    def process_glyphs(glyphs)
       glyphs.each_with_index do |glyph_code, _index|
-        # paint the current glyph
-        newx, newy = @state.trm_transform(0, 0)
+        new_x, new_y = @state.trm_transform(0, 0)
         utf8_chars = @state.current_font.to_utf8(glyph_code)
 
-        # apply to glyph displacment for the current glyph so the next
-        # glyph will appear in the correct position
         glyph_width = @state.current_font.glyph_width(glyph_code) / 1000.0
-        th = 1
-        scaled_glyph_width = glyph_width * @state.font_size * th
+        scaled_glyph_width = glyph_width * @state.font_size
 
-        if @state.font_size >= @largest_font_size
-          @name << PDF::Reader::TextRun.new(newx, newy, scaled_glyph_width, @state.font_size, utf8_chars)
-        end
-
-        unless utf8_chars == SPACE
-          @characters << PDF::Reader::TextRun.new(newx, newy, scaled_glyph_width, @state.font_size, utf8_chars)
-        end
-        @state.process_glyph_displacement(glyph_width, 0, utf8_chars == SPACE)
+        accumulate_name(new_x, new_y, scaled_glyph_width, utf8_chars)
       end
+    end
+
+    def accumulate_name(new_x, new_y, scaled_glyph_width, utf8_chars)
+      return unless @state.font_size >= @largest_font_size
+
+      @name << PDF::Reader::TextRun.new(new_x, new_y, scaled_glyph_width, @state.font_size, utf8_chars)
     end
   end
 end
