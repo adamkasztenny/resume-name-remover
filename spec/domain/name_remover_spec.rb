@@ -14,6 +14,8 @@ describe 'Name Removal' do
 
     it 'does not include the candidate name' do
       result = subject.remove(candidate_name, text_content)
+
+      expect(result).to be_empty
       expect(result).not_to include(candidate_name)
     end
   end
@@ -58,9 +60,12 @@ example.com                        Cumulative GPA: 2.26
                                        •   LibreOffice                  •   PDFs
       }
 
-      it 'does not include the candidate name' do
+      it 'does not include any part of the candidate name' do
         result = subject.remove(candidate_name, text_content)
-        expect(result).not_to include(candidate_name)
+
+        expect(result).not_to be_empty
+        expect(result).not_to include('Candidate')
+        expect(result).not_to include('Name')
       end
     end
 
@@ -108,9 +113,37 @@ candidate.name.example.com         Cumulative GPA: 2.26
 Candidate Name is my name
       }
 
-      it 'does not include the candidate name' do
+      it 'does not include any part of the candidate name' do
         result = subject.remove(candidate_name, text_content)
-        expect(result).not_to include(candidate_name)
+
+        expect(result).not_to be_empty
+        expect(result).not_to include('Candidate')
+        expect(result).not_to include('Name')
+      end
+    end
+
+    context "when the candidate's name has no spaces" do
+      candidate_name_without_spaces = 'CandidateName'
+      text_content = %(
+        CandidateName
+
+        I'm Candidate Name!
+        Lorem ipsum
+      )
+
+      it 'does not include the candidate name without spaces' do
+        result = subject.remove(candidate_name_without_spaces, text_content)
+
+        expect(result).not_to be_empty
+        expect(result).not_to include(candidate_name_without_spaces)
+      end
+
+      it 'does not include any part of the candidate name' do
+        result = subject.remove(candidate_name_without_spaces, text_content)
+
+        expect(result).not_to be_empty
+        expect(result).not_to include('Candidate')
+        expect(result).not_to include('Name')
       end
     end
   end
