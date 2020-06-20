@@ -1,9 +1,18 @@
-build:
-	go build
+PROJECT="resume-name-remover"
 
-test:
-	go test -timeout 300ms -v -coverprofile coverage.out ./...
-	go tool cover -html=coverage.out
+install:
+	bundle install
+build:
+	docker build --no-cache -t ${PROJECT} .
+
+start:
+	docker run -d -p 8080:8080 ${PROJECT}
+
+start_development:
+	rake start
+
+test: install
+	rake
 
 lint:
-	go vet
+	rubocop -a app spec
