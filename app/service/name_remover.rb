@@ -2,15 +2,15 @@
 
 module Service
   class NameRemover
-    def initialize(name_retriever, name_remover)
+    def initialize(document_reader, name_retriever, name_remover)
+      @document_reader = document_reader
       @name_retriever = name_retriever
       @name_remover = name_remover
     end
 
-    def remove(document)
+    def remove
+      text_content = @document_reader.text
       name = @name_retriever.name
-      # TODO: actually read the document into text here
-      text_content = document
       @name_remover.remove(name: name, text_content: text_content)
     end
   end
