@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pdf-reader'
 require_relative '../../app/domain/name_remover'
 
 describe 'Name Removal' do
