@@ -16,9 +16,7 @@ module Service
     private
 
     def text_content
-      text_for_pages = @document_reader.pages.map do |page|
-        page.text
-      end
+      text_for_pages = @document_reader.pages.map(&:text)
 
       text_for_pages.join("\n")
     end

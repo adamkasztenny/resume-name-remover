@@ -12,8 +12,8 @@ describe 'Name Remover Service' do
     name_retriever = double('name_retriever')
     name_remover = double('name_remover')
 
-    fake_document_pages.each do |page| 
-      expect(page).to receive(:text).and_return("some page text")
+    fake_document_pages.each do |page|
+      expect(page).to receive(:text).and_return('some page text')
     end
     expect(document_reader).to receive(:pages).and_return(fake_document_pages)
     expect(name_retriever).to receive(:name).and_return(fake_name)

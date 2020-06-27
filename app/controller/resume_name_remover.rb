@@ -9,12 +9,11 @@ require_relative '../domain/name_retriever.rb'
 post '/remove' do
   content_type 'application/json'
 
+  error 400 if request_invalid?(params)
+
   temporary_file = params[:data][:tempfile]
   begin
-    reader = PDF::Reader.new(temporary_file)
-    retreiver = Domain::NameRetriever.new(reader)
-    remover = Domain::NameRemover.new
-    service = Service::NameRemover.new(reader, retreiver, remover)
+    service = create_service(temporary_file)
     result = service.remove
   ensure
     temporary_file.close
@@ -22,4 +21,17 @@ post '/remove' do
   end
 
   JSON.generate({ 'text_content' => result })
+end
+
+private
+
+def request_invalid?(params)
+  params[:data].nil? || params[:data][:tempfile].nil?
+end
+
+def create_service(temporary_file)
+  reader = PDF::Reader.new(temporary_file)
+  retreiver = Domain::NameRetriever.new(reader)
+  remover = Domain::NameRemover.new
+  Service::NameRemover.new(reader, retreiver, remover)
 end
