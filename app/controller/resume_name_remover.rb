@@ -27,12 +27,14 @@ end
 
 private
 
+MAXIMUM_FILE_SIZE_IN_BYTES = 10 * 1024 * 1024
+
 def request_invalid?(params)
   params[:data].nil? || params[:data][:tempfile].nil?
 end
 
 def upload_invalid?(params)
-  params[:data][:type] != 'application/pdf'
+  params[:data][:type] != 'application/pdf' || params[:data][:tempfile].size > MAXIMUM_FILE_SIZE_IN_BYTES
 end
 
 def create_service(temporary_file)
