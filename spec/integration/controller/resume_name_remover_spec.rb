@@ -6,7 +6,7 @@ require 'json'
 
 describe 'Resume Name Remover Controller' do
   it 'should return JSON' do
-    post '/remove', data: Rack::Test::UploadedFile.new('spec/Empty.pdf')
+    post '/remove', data: Rack::Test::UploadedFile.new('spec/Empty.pdf', 'application/pdf')
 
     content_type = last_response.headers['Content-Type']
     expect(content_type).to eq('application/json')
@@ -16,7 +16,7 @@ describe 'Resume Name Remover Controller' do
   end
 
   it 'should return the text content of a resume without any mentions of the candidate name' do
-    post '/remove', data: Rack::Test::UploadedFile.new('spec/ResumeWithMultipleMentions.pdf')
+    post '/remove', data: Rack::Test::UploadedFile.new('spec/ResumeWithMultipleMentions.pdf', 'application/pdf')
 
     body_as_json = JSON.parse(response_body)
     text_content = body_as_json['text_content']
@@ -28,6 +28,12 @@ describe 'Resume Name Remover Controller' do
 
   it 'should return a 400 if there is no uploaded file' do
     post '/remove'
+
+    expect(last_response.status).to eq(400)
+  end
+
+  it 'should return a 400 if the uploaded file is not a PDF' do
+    post '/remove', Rack::Test::UploadedFile.new('spec/ResumeWithOneMention.odt', 'application/octet-stream')
 
     expect(last_response.status).to eq(400)
   end

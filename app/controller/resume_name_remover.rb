@@ -12,6 +12,8 @@ post '/remove' do
   error 400 if request_invalid?(params)
 
   temporary_file = params[:data][:tempfile]
+  error 400 if upload_invalid?(params)
+
   begin
     service = create_service(temporary_file)
     result = service.remove
@@ -27,6 +29,10 @@ private
 
 def request_invalid?(params)
   params[:data].nil? || params[:data][:tempfile].nil?
+end
+
+def upload_invalid?(params)
+  params[:data][:type] != 'application/pdf'
 end
 
 def create_service(temporary_file)
