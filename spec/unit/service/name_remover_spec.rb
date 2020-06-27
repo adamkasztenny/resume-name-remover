@@ -3,16 +3,19 @@
 require_relative '../../../app/service/name_remover'
 
 describe 'Name Remover Service' do
-  fake_document_text = 'Some Resume with the Candidate Name'
-  fake_name = 'Candidate Name'
-  text_content = 'Some Annonymized Resume'
+  let(:fake_document_pages) { [double('page1'), double('page2')] }
+  let(:fake_name) { 'Candidate Name' }
+  let(:text_content) { 'Some Annonymized Resume' }
 
   it "removes the candidate's name from the given document" do
     document_reader = double('document_reader')
     name_retriever = double('name_retriever')
     name_remover = double('name_remover')
 
-    expect(document_reader).to receive(:text).and_return(fake_document_text)
+    fake_document_pages.each do |page| 
+      expect(page).to receive(:text).and_return("some page text")
+    end
+    expect(document_reader).to receive(:pages).and_return(fake_document_pages)
     expect(name_retriever).to receive(:name).and_return(fake_name)
     expect(name_remover).to receive(:remove).and_return(text_content)
 

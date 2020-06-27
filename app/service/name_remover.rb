@@ -9,9 +9,18 @@ module Service
     end
 
     def remove
-      text_content = @document_reader.text
       name = @name_retriever.name
       @name_remover.remove(name: name, text_content: text_content)
+    end
+
+    private
+
+    def text_content
+      text_for_pages = @document_reader.pages.map do |page|
+        page.text
+      end
+
+      text_for_pages.join("\n")
     end
   end
 end
