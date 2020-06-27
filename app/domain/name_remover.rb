@@ -3,16 +3,9 @@
 module Domain
   class NameRemover
     def remove(name:, text_content:)
-      name_fragments = name.split(/(?=[A-Z])/)
-      name_fragments.reduce(text_content) do |content, name_fragment|
-        remove_name(name_fragment, content)
-      end
-    end
-
-    private
-
-    def remove_name(name, text_content)
-      text_content.gsub(/#{name}/i, '')
+      name_fragments = name.split(/(?=[A-Z])/).map(&:strip)
+      replacement_regex = /#{name_fragments.join("|")}/i
+      text_content.gsub(replacement_regex, '')
     end
   end
 end

@@ -116,8 +116,60 @@ Candidate Name is my name
         result = subject.remove(name: candidate_name, text_content: text_content)
 
         expect(result).not_to be_empty
-        expect(result).not_to include('Candidate')
-        expect(result).not_to include('Name')
+        expect(result).not_to match(%r{Candidate}i)
+        expect(result).not_to match(%r{Name}i)
+      end
+    end
+
+    context "when the candidate's name is more than two words" do
+      candidate_name = 'The Candidate Name Jr.'
+      text_content = %{
+My name is tHe CaNdiDate NaMe JR.!
+
+
+                                    Education
+The Candidate Name Jr.
+                                   PhD in Derping
+100 DerpAvenue                     University of Blorp, May 2015
+Address Line 2
+                                   Cumulative GPA: 3.89
+(555) 555 5555
+                                   BS in Blorpology
+candidate.the.name.jr@example.com         Blorf College, May 2001
+candidate.the.name.jr@example.com         Cumulative GPA: 2.26
+
+
+                                    Experience
+
+                                   Chief Derping Officer                        July 2011 – Mar 2012
+                                   Some Company
+
+                                       •   Derped pretty hard
+
+                                       •   Coordinated derping efforts
+
+                                   Senior Derper                                Apr 2001 – Jan 2011
+                                   Some Other Company
+
+                                       •   Guided junior derpers
+
+                                       •   Created derp infrastructure
+
+
+                                    Skills
+
+                                       •   Derping
+
+                                       •   LibreOffice               (Continued on the next page)
+}
+      it 'does not include any part of the candidate name' do
+        result = subject.remove(name: candidate_name, text_content: text_content)
+
+        expect(result).not_to be_empty
+        expect(result).not_to match(%r{Then}i)
+        expect(result).not_to match(%r{Candidate}i)
+        expect(result).not_to match(%r{Name}i)
+        expect(result).not_to match(%r{Jr}i)
       end
     end
 
@@ -151,7 +203,7 @@ Candidate Name is my name
         result = subject.remove(name: candidate_name, text_content: text_content)
 
         expect(result).not_to be_empty
-        expect(result).to equal(text_content)
+        expect(result).to eq(text_content)
       end
     end
   end
