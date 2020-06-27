@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../app/service/name_remover'
+require_relative '../../../app/service/name_remover'
 
 describe 'Name Remover Service' do
   fake_document_text = 'Some Resume with the Candidate Name'

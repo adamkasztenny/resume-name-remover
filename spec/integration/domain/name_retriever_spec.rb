@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'pdf-reader'
-require_relative '../../app/domain/name_retriever'
+require_relative '../../../app/domain/name_retriever'
 
 describe 'Name Retrieval' do
   context 'when the document is empty' do
