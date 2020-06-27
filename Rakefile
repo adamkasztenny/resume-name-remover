@@ -6,5 +6,5 @@ RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
 
 task :start do
-	exec("ruby app/controller/controller.rb -p 8080")
+	exec("ruby app/controller/resume_name_remover.rb -p 8080")
 end
