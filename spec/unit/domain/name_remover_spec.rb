@@ -116,8 +116,8 @@ Candidate Name is my name
         result = subject.remove(name: candidate_name, text_content: text_content)
 
         expect(result).not_to be_empty
-        expect(result).not_to match(%r{Candidate}i)
-        expect(result).not_to match(%r{Name}i)
+        expect(result).not_to match(/Candidate/i)
+        expect(result).not_to match(/Name/i)
       end
     end
 
@@ -166,10 +166,10 @@ candidate.the.name.jr@example.com         Cumulative GPA: 2.26
         result = subject.remove(name: candidate_name, text_content: text_content)
 
         expect(result).not_to be_empty
-        expect(result).not_to match(%r{Then}i)
-        expect(result).not_to match(%r{Candidate}i)
-        expect(result).not_to match(%r{Name}i)
-        expect(result).not_to match(%r{Jr}i)
+        expect(result).not_to match(/Then/i)
+        expect(result).not_to match(/Candidate/i)
+        expect(result).not_to match(/Name/i)
+        expect(result).not_to match(/Jr/i)
       end
     end
 
