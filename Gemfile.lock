@@ -21,12 +21,16 @@ GEM
       ruby2_keywords (~> 0.0.1)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
+    pdf-core (0.7.0)
     pdf-reader (2.4.0)
       Ascii85 (~> 1.0.0)
       afm (~> 0.2.1)
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
+    prawn (2.2.2)
+      pdf-core (~> 0.7.0)
+      ttfunk (~> 1.5)
     rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
@@ -67,6 +71,7 @@ DEPENDENCIES
   faker
   json
   pdf-reader
+  prawn
   rack
   rake (~> 12.3)
   resume-name-remover!
