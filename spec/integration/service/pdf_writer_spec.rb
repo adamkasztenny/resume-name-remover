@@ -12,7 +12,7 @@ describe 'PDF Writer' do
     file = subject.write(empty_text_content)
 
     expect(file).to be_a(Tempfile)
-    expect(pdf_content(file)).to eq(empty_text_content) 
+    expect(pdf_content(file)).to eq(empty_text_content)
     file.unlink
   end
 
@@ -22,7 +22,7 @@ describe 'PDF Writer' do
     file = subject.write(text_content)
 
     expect(file).to be_a(Tempfile)
-    expect(pdf_content(file)).to eq(text_content) 
+    expect(pdf_content(file)).to eq(text_content)
     file.unlink
   end
 
@@ -33,17 +33,15 @@ describe 'PDF Writer' do
     file = subject.write(text_content)
 
     expect(file).to be_a(Tempfile)
-    expect(pdf_content(file)).to eq(expected_text_content) 
+    expect(pdf_content(file)).to eq(expected_text_content)
     file.unlink
   end
 
   private
 
   def pdf_content(file)
-     reader = PDF::Reader.new(file)
-     text_content = reader.pages.map do |page|
-        page.text
-     end
-     text_content.join("\n")
+    reader = PDF::Reader.new(file)
+    text_content = reader.pages.map(&:text)
+    text_content.join("\n")
   end
 end

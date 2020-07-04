@@ -3,27 +3,28 @@
 require_relative '../integration_spec_helper.rb'
 require_relative '../../../app/controller/resume_name_remover'
 require 'json'
+require 'pdf-reader'
 
 describe 'Resume Name Remover Controller' do
-  it 'should return JSON' do
+  it 'should return a PDF' do
     post '/remove', data: Rack::Test::UploadedFile.new('spec/Empty.pdf', 'application/pdf')
 
     content_type = last_response.headers['Content-Type']
-    expect(content_type).to eq('application/json')
-
-    body_as_json = JSON.parse(response_body)
-    expect(body_as_json).not_to be_empty
+    expect(content_type).to eq('application/pdf')
   end
 
-  it 'should return the text content of a resume without any mentions of the candidate name' do
+  it 'should return a PDF of a resume without any mentions of the candidate name' do
     post '/remove', data: Rack::Test::UploadedFile.new('spec/ResumeWithMultipleMentions.pdf', 'application/pdf')
 
-    body_as_json = JSON.parse(response_body)
-    text_content = body_as_json['text_content']
+    pdf = last_response.body
+    temporary_file = Tempfile.new
+    temporary_file.write(pdf)
+    text_content = pdf_content(temporary_file)
 
     expect(text_content).not_to be_empty
     expect(text_content).not_to match(/Candidate/i)
     expect(text_content).not_to match(/Name/i)
+    temporary_file.unlink
   end
 
   it 'should return a 400 if there is no uploaded file' do
@@ -36,5 +37,13 @@ describe 'Resume Name Remover Controller' do
     post '/remove', Rack::Test::UploadedFile.new('spec/ResumeWithOneMention.odt', 'application/octet-stream')
 
     expect(last_response.status).to eq(400)
+  end
+
+  private
+
+  def pdf_content(body)
+    reader = PDF::Reader.new(body)
+    text_for_pages = reader.pages.map(&:text)
+    text_for_pages.join("\n")
   end
 end
