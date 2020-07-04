@@ -2,8 +2,8 @@
 
 require_relative '../integration_spec_helper.rb'
 require_relative '../../../app/controller/resume_name_remover'
+require_relative '../../pdf_content.rb'
 require 'json'
-require 'pdf-reader'
 
 describe 'Resume Name Remover Controller' do
   it 'should return a PDF' do
@@ -37,13 +37,5 @@ describe 'Resume Name Remover Controller' do
     post '/remove', Rack::Test::UploadedFile.new('spec/ResumeWithOneMention.odt', 'application/octet-stream')
 
     expect(last_response.status).to eq(400)
-  end
-
-  private
-
-  def pdf_content(body)
-    reader = PDF::Reader.new(body)
-    text_for_pages = reader.pages.map(&:text)
-    text_for_pages.join("\n")
   end
 end

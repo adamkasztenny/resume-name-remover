@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'pdf-reader'
 require_relative '../../../app/service/pdf_writer'
+require_relative '../../pdf_content.rb'
 
 describe 'PDF Writer' do
   subject { Service::PDFWriter.new }
@@ -35,13 +35,5 @@ describe 'PDF Writer' do
     expect(file).to be_a(Tempfile)
     expect(pdf_content(file)).to eq(expected_text_content)
     file.unlink
-  end
-
-  private
-
-  def pdf_content(file)
-    reader = PDF::Reader.new(file)
-    text_content = reader.pages.map(&:text)
-    text_content.join("\n")
   end
 end
