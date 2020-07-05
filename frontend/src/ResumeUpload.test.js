@@ -6,7 +6,13 @@ test('renders the upload form', () => {
   const { getByTestId } = render(<ResumeUpload />);
   const form = getByTestId('upload-form');
   expect(form).toBeInTheDocument();
-  expect(form.action).toBe('http://localhost:8080/remove')
+});
+
+test('configures the form to point to the backend', () => {
+  const { getByTestId } = render(<ResumeUpload />);
+  const form = getByTestId('upload-form');
+  expect(form.action).toBe('http://localhost:8080/remove');
+  expect(form.method).toBe('post');
 });
 
 test('renders the file upload', () => {
