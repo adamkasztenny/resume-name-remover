@@ -1,0 +1,17 @@
+version: '3'
+services:
+  resume-name-remover-backend:
+    container_name: resume-name-remover-backend
+    build: ./backend
+    ports:
+      - "8080:8080"
+
+  resume-name-remover-frontend:
+    container_name: resume-name-remover-frontend
+    build: ./frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - resume-name-remover-backend
+    links:
+      - resume-name-remover-backend
