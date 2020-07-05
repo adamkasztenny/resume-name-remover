@@ -18,9 +18,7 @@ post '/remove' do
   begin
     name_remover_service = create_name_remover_service(temporary_input_file)
     text_content = name_remover_service.remove
-
-    pdf_writer_service = Service::PDFWriter.new
-    temporary_output_file = pdf_writer_service.write(text_content)
+    temporary_output_file = Service::PDFWriter.write(text_content)
   ensure
     temporary_input_file.close
     temporary_input_file.unlink

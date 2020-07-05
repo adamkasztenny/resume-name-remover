@@ -4,7 +4,7 @@ require 'prawn'
 
 module Service
   class PDFWriter
-    def write(text_content)
+    def self.write(text_content)
       file = Tempfile.new
       Prawn::Document.generate(file) do
         text text_content

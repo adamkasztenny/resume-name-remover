@@ -4,7 +4,7 @@ require_relative '../../../app/service/pdf_writer'
 require_relative '../../pdf_content.rb'
 
 describe 'PDF Writer' do
-  subject { Service::PDFWriter.new }
+  subject { Service::PDFWriter }
 
   it 'should write empty text content to a temporary file' do
     empty_text_content = ''
