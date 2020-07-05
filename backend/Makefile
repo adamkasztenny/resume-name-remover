@@ -1,4 +1,4 @@
-PROJECT="resume-name-remover"
+PROJECT="resume-name-remover-backend"
 
 install:
 	bundle install
