@@ -13,7 +13,7 @@ test('configures the form to point to the backend', () => {
   const { getByTestId } = render(<ResumeUpload />);
   const form = getByTestId('upload-form');
 
-  expect(form.action).toBe('http://localhost:9000/remove');
+  expect(form.action).toBe('http://localhost/remove');
   expect(form.method).toBe('post');
   expect(form.enctype).toBe('multipart/form-data');
 });
