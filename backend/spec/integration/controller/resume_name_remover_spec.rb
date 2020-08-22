@@ -33,8 +33,14 @@ describe 'Resume Name Remover Controller' do
     expect(last_response.status).to eq(400)
   end
 
-  it 'should return a 400 if the uploaded file is not a PDF' do
+  it 'should return a 400 if the uploaded file does not have the application/pdf content type' do
     post '/remove', Rack::Test::UploadedFile.new('spec/ResumeWithOneMention.odt', 'application/octet-stream')
+
+    expect(last_response.status).to eq(400)
+  end
+
+  it 'should return a 400 if the uploaded file is not actually a PDF' do
+    post '/remove', Rack::Test::UploadedFile.new('spec/NotAPDF.pdf', 'application/pdf')
 
     expect(last_response.status).to eq(400)
   end
