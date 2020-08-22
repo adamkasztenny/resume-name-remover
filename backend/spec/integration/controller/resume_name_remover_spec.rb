@@ -9,6 +9,7 @@ describe 'Resume Name Remover Controller' do
   it 'should return a PDF' do
     post '/remove', data: Rack::Test::UploadedFile.new('spec/Empty.pdf', 'application/pdf')
 
+    expect(last_response.status).to eq(200)
     content_type = last_response.headers['Content-Type']
     expect(content_type).to eq('application/pdf')
   end
@@ -21,6 +22,7 @@ describe 'Resume Name Remover Controller' do
     temporary_file.write(pdf)
     text_content = pdf_content(temporary_file)
 
+    expect(last_response.status).to eq(200)
     expect(text_content).not_to be_empty
     expect(text_content).not_to match(/Candidate/i)
     expect(text_content).not_to match(/Name/i)
@@ -35,6 +37,12 @@ describe 'Resume Name Remover Controller' do
 
   it 'should return a 400 if the uploaded file does not have the application/pdf content type' do
     post '/remove', Rack::Test::UploadedFile.new('spec/ResumeWithOneMention.odt', 'application/octet-stream')
+
+    expect(last_response.status).to eq(400)
+  end
+
+  it 'should return a 400 if the uploaded file does not have a PDF extension' do
+    post '/remove', Rack::Test::UploadedFile.new('spec/PDFWithoutExtension', 'application/pdf')
 
     expect(last_response.status).to eq(400)
   end
