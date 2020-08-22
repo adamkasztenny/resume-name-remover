@@ -13,6 +13,8 @@ post '/remove' do
   temporary_input_file = params[:data][:tempfile]
   error 400 if upload_invalid?(params)
 
+  error 413 if upload_too_large?(params)
+
   begin
     name_remover_service = create_name_remover_service(temporary_input_file)
     text_content = name_remover_service.remove
@@ -38,8 +40,10 @@ def request_invalid?(params)
 end
 
 def upload_invalid?(params)
-  params[:data][:type] != 'application/pdf' ||
-    !params[:data][:tempfile].path.end_with?('.pdf') ||
+  params[:data][:type] != 'application/pdf' || !params[:data][:tempfile].path.end_with?('.pdf')
+end
+
+def upload_too_large?(params)
     params[:data][:tempfile].size > MAXIMUM_FILE_SIZE_IN_BYTES
 end
 

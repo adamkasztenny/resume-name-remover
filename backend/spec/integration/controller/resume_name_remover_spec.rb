@@ -66,10 +66,10 @@ describe 'Resume Name Remover Controller' do
     expect(content_type).not_to eq('application/pdf')
   end
 
-  it 'should return a 400 if the uploaded file is over 200 KB' do
+  it 'should return a 413 if the uploaded file is over 200 KB' do
     post '/remove', data: Rack::Test::UploadedFile.new('spec/TooLarge.pdf', 'application/pdf')
 
-    expect(last_response.status).to eq(400)
+    expect(last_response.status).to eq(413)
     expect(content_type).not_to eq('application/pdf')
   end
 
