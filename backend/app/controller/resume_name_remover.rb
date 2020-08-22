@@ -8,8 +8,6 @@ require_relative '../domain/name_remover.rb'
 require_relative '../domain/name_retriever.rb'
 
 post '/remove' do
-  content_type 'application/pdf'
-
   error 400 if request_invalid?(params)
 
   temporary_input_file = params[:data][:tempfile]
@@ -26,6 +24,7 @@ post '/remove' do
     temporary_input_file.unlink
   end
 
+  content_type 'application/pdf'
   send_file temporary_output_file, type: 'application/pdf'
   temporary_file.unlink
 end
