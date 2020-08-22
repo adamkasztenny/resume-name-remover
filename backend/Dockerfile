@@ -10,5 +10,5 @@ ENV APP_ENV=production
 RUN addgroup -S resume-name-remover && adduser -S resume-name-remover -G resume-name-remover
 USER resume-name-remover
 
-EXPOSE 8080
+EXPOSE 9000
 ENTRYPOINT ["rake", "start"]

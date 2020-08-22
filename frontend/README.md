@@ -1,6 +1,6 @@
 # Resume Name Remover Frontend
 
-For this to work, the [backend](../backend) needs to be running on [localhost:8080](http://localhost:8080).
+For this to work, the [backend](../backend) needs to be running on [localhost:9000](http://localhost:9000).
 
 To start the server in development mode on [localhost:3000](http://localhost:3000):
 

@@ -5,7 +5,7 @@ build:
 	docker build --no-cache -t ${PROJECT} .
 
 start: build
-	docker run -d -p 8081:80 ${PROJECT}
+	docker run -d -p 9001:80 ${PROJECT}
 
 start_development: install
 	yarn start
