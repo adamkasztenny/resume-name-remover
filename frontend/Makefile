@@ -4,7 +4,7 @@ PROJECT="resume-name-remover-frontend"
 build:
 	docker build --no-cache -t ${PROJECT} .
 
-start:
+start: build
 	docker run -d -p 8081:80 ${PROJECT}
 
 start_development: install
