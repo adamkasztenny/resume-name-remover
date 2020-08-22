@@ -29,6 +29,12 @@ describe 'Resume Name Remover Controller' do
     temporary_file.unlink
   end
 
+  it 'accepts files under 200 KB' do
+    post '/remove', data: Rack::Test::UploadedFile.new('spec/Large.pdf', 'application/pdf')
+
+    expect(last_response.status).to eq(200)
+  end
+
   it 'should return a 400 if there is no uploaded file' do
     post '/remove'
 
@@ -49,6 +55,12 @@ describe 'Resume Name Remover Controller' do
 
   it 'should return a 400 if the uploaded file is not actually a PDF' do
     post '/remove', data: Rack::Test::UploadedFile.new('spec/NotAPDF.pdf', 'application/pdf')
+
+    expect(last_response.status).to eq(400)
+  end
+
+  it 'should return a 400 if the uploaded file is over 200 KB' do
+    post '/remove', data: Rack::Test::UploadedFile.new('spec/TooLarge.pdf', 'application/pdf')
 
     expect(last_response.status).to eq(400)
   end

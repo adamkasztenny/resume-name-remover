@@ -14,6 +14,17 @@ describe 'Name Retrieval' do
     end
   end
 
+  context 'when the document contains no text' do
+    subject do
+      reader = PDF::Reader.new('spec/OnlyPictures.pdf')
+      Domain::NameRetriever.new(reader)
+    end
+
+    it "cannot retrieve a candidate's name" do
+      expect(subject.name).to be_empty
+    end
+  end
+
   context "when the candidate's name is mentioned once in the document" do
     subject do
       reader = PDF::Reader.new('spec/ResumeWithOneMention.pdf')
