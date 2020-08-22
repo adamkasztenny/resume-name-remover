@@ -19,6 +19,8 @@ post '/remove' do
     name_remover_service = create_name_remover_service(temporary_input_file)
     text_content = name_remover_service.remove
     temporary_output_file = Service::PDFWriter.write(text_content)
+  rescue PDF::Reader::MalformedPDFError
+    error 400
   ensure
     temporary_input_file.close
     temporary_input_file.unlink
@@ -37,7 +39,9 @@ def request_invalid?(params)
 end
 
 def upload_invalid?(params)
-  params[:data][:type] != 'application/pdf' || params[:data][:tempfile].size > MAXIMUM_FILE_SIZE_IN_BYTES
+  params[:data][:type] != 'application/pdf' ||
+    !params[:data][:tempfile].path.end_with?('.pdf') ||
+    params[:data][:tempfile].size > MAXIMUM_FILE_SIZE_IN_BYTES
 end
 
 def create_name_remover_service(temporary_input_file)
