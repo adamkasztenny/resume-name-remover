@@ -166,7 +166,7 @@ candidate.the.name.jr@example.com         Cumulative GPA: 2.26
         result = subject.remove(name: candidate_name, text_content: text_content)
 
         expect(result).not_to be_empty
-        expect(result).not_to match(/Then/i)
+        expect(result).not_to match(/The/i)
         expect(result).not_to match(/Candidate/i)
         expect(result).not_to match(/Name/i)
         expect(result).not_to match(/Jr/i)
@@ -188,6 +188,23 @@ candidate.the.name.jr@example.com         Cumulative GPA: 2.26
         expect(result).not_to be_empty
         expect(result).not_to include('Candidate')
         expect(result).not_to include('Name')
+      end
+    end
+
+    context "when the candidate's name is only one word" do
+      single_word_candidate_name = 'Candidate'
+      text_content = %(
+        Candidate
+
+        I'm Candidate!
+        Lorem ipsum
+      )
+
+      it 'does not include the candidate name' do
+        result = subject.remove(name: single_word_candidate_name, text_content: text_content)
+
+        expect(result).not_to be_empty
+        expect(result).not_to include('Candidate')
       end
     end
 
