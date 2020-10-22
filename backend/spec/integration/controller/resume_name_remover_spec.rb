@@ -76,6 +76,6 @@ describe 'Resume Name Remover Controller' do
   private
 
   def content_type
-   last_response.headers['Content-Type']
+    last_response.headers['Content-Type']
   end
 end

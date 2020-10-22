@@ -44,7 +44,7 @@ def upload_invalid?(params)
 end
 
 def upload_too_large?(params)
-    params[:data][:tempfile].size > MAXIMUM_FILE_SIZE_IN_BYTES
+  params[:data][:tempfile].size > MAXIMUM_FILE_SIZE_IN_BYTES
 end
 
 def create_name_remover_service(temporary_input_file)
