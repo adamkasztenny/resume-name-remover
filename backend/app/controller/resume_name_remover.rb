@@ -2,10 +2,10 @@
 
 require 'sinatra'
 require 'pdf-reader'
-require_relative '../service/name_remover.rb'
-require_relative '../service/pdf_writer.rb'
-require_relative '../domain/name_remover.rb'
-require_relative '../domain/name_retriever.rb'
+require_relative '../service/name_remover'
+require_relative '../service/pdf_writer'
+require_relative '../domain/name_remover'
+require_relative '../domain/name_retriever'
 
 post '/remove' do
   error 400 if request_invalid?(params)

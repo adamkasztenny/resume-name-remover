@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../integration_spec_helper.rb'
+require_relative '../integration_spec_helper'
 require_relative '../../../app/controller/resume_name_remover'
-require_relative '../../pdf_content.rb'
+require_relative '../../pdf_content'
 require 'json'
 
 describe 'Resume Name Remover Controller' do

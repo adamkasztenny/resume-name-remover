@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../../../app/service/pdf_writer'
-require_relative '../../pdf_content.rb'
+require_relative '../../pdf_content'
 
 describe 'PDF Writer' do
   subject { Service::PDFWriter }

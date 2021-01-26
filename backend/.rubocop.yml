@@ -8,3 +8,7 @@ Metrics/BlockLength:
 Metrics/AbcSize:
   Exclude: 
     - 'spec/**/*'
+
+Lint/MissingSuper:
+  Exclude:
+    - app/domain/name_retriever.rb
