@@ -5,7 +5,7 @@ COPY . .
 
 RUN apk add --update nodejs nodejs-npm
 
-RUN npm install -g yarn react-scripts@3.4.0
+RUN npm install -g yarn react-scripts@4.0.1
 RUN npm install
 RUN yarn build 
 
